@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Feliz Cumpleaños Yandy! 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Dancing+Script:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --pink: #FF69B4;
+    --purple: #9B59B6;
+    --teal: #1ABC9C;
+    --red: #E74C3C;
+    --blue: #3498DB;
+    --orange: #FF6B35;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0010;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 20px; height: 20px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    box-shadow: 0 0 15px var(--gold), 0 0 30px var(--gold);
+    mix-blend-mode: screen;
+  }
+
+  /* STARS BACKGROUND */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.1; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* CANVAS FOR FIREWORKS + CONFETTI */
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* MAIN CONTENT */
+  .hero {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  /* DECORATIVE RING */
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid;
+    animation: rotate var(--spd) linear infinite;
+    opacity: 0.3;
+  }
+  .ring:nth-child(1) { width: 500px; height: 500px; border-color: var(--gold); --spd: 20s; }
+  .ring:nth-child(2) { width: 650px; height: 650px; border-color: var(--pink); --spd: 30s; animation-direction: reverse; }
+  .ring:nth-child(3) { width: 800px; height: 800px; border-color: var(--purple); --spd: 45s; }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+
+  /* GLOW ORB */
+  .glow-orb {
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%);
+    position: absolute;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  /* BADGE */
+  .badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+    margin-bottom: 20px;
+  }
+
+  /* MAIN TITLE */
+  .main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3rem, 12vw, 9rem);
+    line-height: 1;
+    background: linear-gradient(135deg, #FFD700, #FF69B4, #9B59B6, #1ABC9C, #FFD700);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite, fadeUp 1s ease forwards 0.6s;
+    opacity: 0;
+    filter: drop-shadow(0 0 40px rgba(255,215,0,0.5));
+    position: relative;
+    z-index: 2;
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .name-highlight {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(4rem, 16vw, 13rem);
+    display: block;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FFD700 80%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: goldShimmer 2s ease infinite, scaleIn 1s cubic-bezier(0.34,1.56,0.64,1) forwards 1s;
+    opacity: 0;
+    transform: scale(0.5);
+    text-shadow: none;
+    filter: drop-shadow(0 0 60px rgba(255,215,0,0.8));
+  }
+  @keyframes goldShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes scaleIn {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* EMOJI BURST */
+  .emoji-row {
+    font-size: 2rem;
+    margin: 20px 0;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1.8s;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .emoji-row span {
+    display: inline-block;
+    animation: bounce 1s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(10deg); }
+  }
+
+  /* SUBTITLE */
+  .subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 3px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 2.2s;
+    max-width: 500px;
+    line-height: 1.8;
+  }
+
+  /* CAKE SECTION */
+  .cake-section {
+    margin: 40px 0;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 2.5s;
+  }
+  .cake {
+    font-size: 8rem;
+    display: inline-block;
+    animation: cakeBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,165,0,0.8));
+  }
+  @keyframes cakeBounce {
+    0%, 100% { transform: scale(1) rotate(-3deg); }
+    50% { transform: scale(1.15) rotate(3deg); }
+  }
+
+  /* WISH CARDS */
+  .wishes {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 30px 0;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 2.8s;
+    max-width: 900px;
+  }
+  .wish-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px 25px;
+    color: white;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .wish-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .wish-card:hover::before { opacity: 1; }
+  .wish-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 0 10px 40px rgba(255,215,0,0.3);
+  }
+  .wish-card .icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+
+  /* BUTTON */
+  .btn-surprise {
+    margin-top: 30px;
+    padding: 18px 50px;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    border: none;
+    border-radius: 50px;
+    color: #0a0010;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 3.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-surprise::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s ease;
+  }
+  .btn-surprise:hover::after { left: 100%; }
+  .btn-surprise:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(255,215,0,0.8);
+  }
+
+  /* FLOATING BALLOONS */
+  .balloon {
+    position: fixed;
+    font-size: 3rem;
+    animation: floatUp linear infinite;
+    pointer-events: none;
+    z-index: 5;
+    bottom: -100px;
+  }
+  @keyframes floatUp {
+    to { transform: translateY(-110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MUSIC NOTE RAIN */
+  .note {
+    position: fixed;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 5;
+    animation: fallDown linear infinite;
+    opacity: 0;
+  }
+  @keyframes fallDown {
+    0% { opacity: 0; transform: translateY(-50px) rotate(0deg); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* SPARKLE CLICK EFFECT */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 1.5rem;
+    animation: sparkleAnim 0.8s ease forwards;
+  }
+  @keyframes sparkleAnim {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(2); opacity: 0; }
+  }
+
+  /* FOOTER */
+  .footer-text {
+    margin-top: 50px;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 3.5s;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .ring { display: none; }
+    .wishes { gap: 12px; }
+    .wish-card { padding: 15px 18px; font-size: 0.8rem; }
+  }
+
+  /* ─── MUSIC PLAYER ─── */
+  .music-player {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .music-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 0 25px rgba(255,215,0,0.6), 0 4px 20px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .music-btn:hover {
+    transform: scale(1.12);
+    box-shadow: 0 0 45px rgba(255,215,0,0.9), 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .music-btn.playing {
+    animation: musicPulse 1.2s ease-in-out infinite;
+  }
+  @keyframes musicPulse {
+    0%, 100% { box-shadow: 0 0 25px rgba(255,215,0,0.6), 0 4px 20px rgba(0,0,0,0.4); }
+    50% { box-shadow: 0 0 55px rgba(255,215,0,1), 0 0 80px rgba(255,105,180,0.5), 0 4px 20px rgba(0,0,0,0.4); }
+  }
+
+  /* Ripple rings around button when playing */
+  .music-btn.playing::before,
+  .music-btn.playing::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    animation: rippleRing 2s ease-out infinite;
+    pointer-events: none;
+  }
+  .music-btn.playing::after { animation-delay: 1s; }
+  @keyframes rippleRing {
+    0% { width: 60px; height: 60px; opacity: 0.8; top: 0; left: 0; }
+    100% { width: 130px; height: 130px; opacity: 0; top: -35px; left: -35px; }
+  }
+
+  .music-label {
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: var(--gold);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .music-label.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Equalizer bars */
+  .equalizer {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .equalizer.active { opacity: 1; }
+  .eq-bar {
+    width: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+    animation: eqAnim var(--spd) ease-in-out infinite alternate;
+    min-height: 4px;
+  }
+  @keyframes eqAnim {
+    from { height: 4px; }
+    to { height: var(--h); }
+  }
+
+  /* Tap-to-start overlay (mobile requirement) */
+  .tap-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(10,0,16,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    cursor: pointer;
+    animation: fadeIn 0.5s ease;
+  }
+  .tap-overlay.hidden {
+    animation: fadeOut 0.5s ease forwards;
+    pointer-events: none;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+  .tap-icon {
+    font-size: 5rem;
+    animation: tapBounce 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+  }
+  @keyframes tapBounce {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.1) translateY(-10px); }
+  }
+  .tap-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    color: var(--gold);
+    text-align: center;
+    padding: 0 20px;
+  }
+  .tap-sub {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<canvas id="canvas"></canvas>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Main Hero -->
+<div class="hero">
+  <div class="ring"></div>
+  <div class="ring"></div>
+  <div class="ring"></div>
+  <div class="glow-orb"></div>
+
+  <p class="badge">✦ Hoy es tu día especial ✦</p>
+
+  <h1 class="main-title">
+    ¡Feliz Cumpleaños!
+    <span class="name-highlight">Yandy</span>
+  </h1>
+
+  <div class="emoji-row">
+    <span style="--i:0">🎉</span>
+    <span style="--i:1">🎂</span>
+    <span style="--i:2">🎊</span>
+    <span style="--i:3">✨</span>
+    <span style="--i:4">🥂</span>
+    <span style="--i:5">🎁</span>
+    <span style="--i:6">🌟</span>
+    <span style="--i:7">🎈</span>
+  </div>
+
+  <div class="cake-section">
+    <span class="cake">🎂</span>
+  </div>
+
+  <p class="subtitle">
+    Que este día esté lleno de alegría,<br>
+    amor y momentos inolvidables 💫
+  </p>
+
+  <div class="wishes">
+    <div class="wish-card">
+      <span class="icon">❤️</span>
+      Que el amor te rodee siempre
+    </div>
+    <div class="wish-card">
+      <span class="icon">🌙</span>
+      Que todos tus sueños se cumplan
+    </div>
+    <div class="wish-card">
+      <span class="icon">🚀</span>
+      Que este año sea el mejor de tu vida
+    </div>
+    <div class="wish-card">
+      <span class="icon">💎</span>
+      Que brilles tanto como mereces
+    </div>
+  </div>
+
+  <button class="btn-surprise" onclick="bigSurprise()">
+    🎆 ¡SORPRESA! 🎆
+  </button>
+
+  <p class="footer-text">Con todo el cariño del mundo · Para Yandy</p>
+</div>
+
+<!-- TAP TO START OVERLAY (needed for mobile autoplay policy) -->
+<div class="tap-overlay" id="tapOverlay" onclick="startExperience()">
+  <div class="tap-icon">🎂</div>
+  <p class="tap-text">¡Toca para celebrar con Yandy!</p>
+  <p class="tap-sub">✦ Con música y sorpresas ✦</p>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player">
+  <div class="equalizer" id="equalizer">
+    <div class="eq-bar" style="--h:18px; --spd:0.4s; animation-delay:0s"></div>
+    <div class="eq-bar" style="--h:12px; --spd:0.6s; animation-delay:0.1s"></div>
+    <div class="eq-bar" style="--h:20px; --spd:0.5s; animation-delay:0.2s"></div>
+    <div class="eq-bar" style="--h:8px;  --spd:0.7s; animation-delay:0.15s"></div>
+    <div class="eq-bar" style="--h:16px; --spd:0.45s;animation-delay:0.05s"></div>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span class="music-label" id="musicLabel">Música de Cumpleaños 🎵</span>
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Play/Pause música">
+      ▶
+    </button>
+  </div>
+</div>
+
+<script>
+// ─── CURSOR ───────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+// ─── STARS ────────────────────────────────────────────────
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 150; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 3 + 1;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%; top:${Math.random()*100}%;
+    --d:${(Math.random()*3+1).toFixed(1)}s;
+    animation-delay:${(Math.random()*3).toFixed(1)}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// ─── CANVAS: FIREWORKS + CONFETTI ─────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const particles = [];
+const confetti = [];
+
+class Firework {
+  constructor(x, y, color) {
+    this.x = x || Math.random() * canvas.width;
+    this.y = y || Math.random() * canvas.height * 0.6;
+    this.color = color || `hsl(${Math.random()*360},100%,60%)`;
+    this.particles = [];
+    const count = 80 + Math.random() * 60;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 / count) * i;
+      const speed = Math.random() * 6 + 2;
+      this.particles.push({
+        x: this.x, y: this.y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 1, life: 1,
+        radius: Math.random() * 3 + 1,
+        color: this.color
+      });
+    }
+  }
+  update() {
+    this.particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.08;
+      p.vx *= 0.97;
+      p.vy *= 0.97;
+      p.alpha -= 0.018;
+      p.life = p.alpha;
+    });
+    this.particles = this.particles.filter(p => p.alpha > 0);
+  }
+  draw() {
+    this.particles.forEach(p => {
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+  isDead() { return this.particles.length === 0; }
+}
+
+class ConfettiPiece {
+  constructor() { this.reset(); this.y = Math.random() * -200; }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = -20;
+    this.w = Math.random() * 12 + 5;
+    this.h = Math.random() * 6 + 3;
+    this.color = `hsl(${Math.random()*360},90%,60%)`;
+    this.vx = (Math.random() - 0.5) * 3;
+    this.vy = Math.random() * 3 + 2;
+    this.angle = Math.random() * Math.PI * 2;
+    this.angularVel = (Math.random() - 0.5) * 0.15;
+    this.alpha = 1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.angle += this.angularVel;
+    if (this.y > canvas.height + 20) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+    ctx.restore();
+  }
+}
+
+// Init confetti
+for (let i = 0; i < 120; i++) {
+  const c = new ConfettiPiece();
+  c.y = Math.random() * canvas.height;
+  confetti.push(c);
+}
+
+const fireworks = [];
+let autoFireworkTimer = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Confetti
+  confetti.forEach(c => { c.update(); c.draw(); });
+
+  // Auto-launch fireworks
+  autoFireworkTimer++;
+  if (autoFireworkTimer > 90) {
+    fireworks.push(new Firework());
+    autoFireworkTimer = 0;
+  }
+
+  // Update + draw fireworks
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    fireworks[i].update();
+    fireworks[i].draw();
+    if (fireworks[i].isDead()) fireworks.splice(i, 1);
+  }
+}
+animate();
+
+// Launch fireworks on click
+document.addEventListener('click', e => {
+  for (let i = 0; i < 3; i++) {
+    const colors = ['#FFD700','#FF69B4','#9B59B6','#1ABC9C','#FF6B35','#3498DB'];
+    fireworks.push(new Firework(
+      e.clientX + (Math.random()-0.5)*100,
+      e.clientY + (Math.random()-0.5)*100,
+      colors[Math.floor(Math.random()*colors.length)]
+    ));
+  }
+  spawnSparkle(e.clientX, e.clientY);
+});
+
+// ─── SPARKLE ON CLICK ─────────────────────────────────────
+function spawnSparkle(x, y) {
+  const sparkles = ['✨','⭐','💫','🌟','✦'];
+  for (let i = 0; i < 5; i++) {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.textContent = sparkles[Math.floor(Math.random()*sparkles.length)];
+    el.style.left = (x + (Math.random()-0.5)*60) + 'px';
+    el.style.top = (y + (Math.random()-0.5)*60) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 800);
+  }
+}
+
+// ─── FLOATING BALLOONS ────────────────────────────────────
+const balloonEmojis = ['🎈','🎉','🎊','🥳','💜','💛','💖'];
+function spawnBalloon() {
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.textContent = balloonEmojis[Math.floor(Math.random()*balloonEmojis.length)];
+  b.style.left = Math.random()*100 + 'vw';
+  const dur = (Math.random()*6+6).toFixed(1);
+  b.style.animationDuration = dur + 's';
+  b.style.animationDelay = '0s';
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), parseFloat(dur)*1000 + 500);
+}
+setInterval(spawnBalloon, 1200);
+
+// ─── MUSIC NOTES RAIN ─────────────────────────────────────
+const notes = ['🎵','🎶','🎸','🎹','🎺','🎻'];
+function spawnNote() {
+  const n = document.createElement('div');
+  n.className = 'note';
+  n.textContent = notes[Math.floor(Math.random()*notes.length)];
+  n.style.left = Math.random()*100 + 'vw';
+  const dur = (Math.random()*8+6).toFixed(1);
+  n.style.animationDuration = dur + 's';
+  n.style.animationDelay = '0s';
+  document.body.appendChild(n);
+  setTimeout(() => n.remove(), parseFloat(dur)*1000 + 500);
+}
+setInterval(spawnNote, 800);
+
+// ─── BIG SURPRISE BUTTON ──────────────────────────────────
+function bigSurprise() {
+  // Mega firework burst
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const colors = ['#FFD700','#FF69B4','#9B59B6','#1ABC9C','#FF6B35','#3498DB','#E74C3C'];
+      fireworks.push(new Firework(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height * 0.7,
+        colors[Math.floor(Math.random()*colors.length)]
+      ));
+    }, i * 80);
+  }
+  // Extra confetti burst
+  for (let i = 0; i < 60; i++) {
+    const c = new ConfettiPiece();
+    c.x = canvas.width / 2 + (Math.random()-0.5)*200;
+    c.y = canvas.height / 2;
+    c.vy = -(Math.random()*15+5);
+    c.vx = (Math.random()-0.5)*20;
+    confetti.push(c);
+  }
+  // Screen flash
+  const flash = document.createElement('div');
+  flash.style.cssText = `
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(255,215,0,0.2); pointer-events:none;
+    z-index:9990; animation: flashAnim 0.5s ease forwards;
+  `;
+  document.body.appendChild(flash);
+  const style = document.createElement('style');
+  style.textContent = `@keyframes flashAnim { 0%{opacity:1} 100%{opacity:0} }`;
+  document.head.appendChild(style);
+  setTimeout(() => { flash.remove(); style.remove(); }, 600);
+}
+
+// ─── WEB AUDIO MUSIC ENGINE ───────────────────────────────
+let audioCtx = null;
+let musicPlaying = false;
+let musicScheduler = null;
+let nextNoteTime = 0;
+let currentNoteIndex = 0;
+let masterGain = null;
+
+const C4=261.63,D4=293.66,E4=329.63,F4=349.23,G4=392.00,A4=440.00,B4=493.88;
+const C5=523.25,D5=587.33,E5=659.25,F5=698.46,G5=783.99,A5=880.00;
+const REST=0;
+const BPM=120, BEAT=60/BPM;
+
+const melody = [
+  [G4,0.75],[G4,0.25],[A4,1],[G4,1],[C5,1],[B4,2],
+  [G4,0.75],[G4,0.25],[A4,1],[G4,1],[D5,1],[C5,2],
+  [G4,0.75],[G4,0.25],[G5,1],[E5,1],[C5,0.75],[B4,0.25],[A4,1.5],
+  [F5,0.75],[F5,0.25],[E5,1],[C5,1],[D5,1],[C5,2],
+  [REST,1.5],
+];
+
+function createAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    masterGain.connect(audioCtx.destination);
+  }
+}
+
+function playNote(freq, startTime, duration) {
+  if (freq === REST) return;
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  osc.connect(g); g.connect(masterGain);
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, startTime);
+  g.gain.setValueAtTime(0, startTime);
+  g.gain.linearRampToValueAtTime(0.5, startTime + 0.02);
+  g.gain.setValueAtTime(0.5, startTime + duration * BEAT - 0.08);
+  g.gain.linearRampToValueAtTime(0, startTime + duration * BEAT);
+  osc.start(startTime); osc.stop(startTime + duration * BEAT + 0.05);
+
+  const osc2 = audioCtx.createOscillator();
+  const g2 = audioCtx.createGain();
+  osc2.connect(g2); g2.connect(masterGain);
+  osc2.type = 'triangle';
+  osc2.frequency.setValueAtTime(freq * 2, startTime);
+  g2.gain.setValueAtTime(0, startTime);
+  g2.gain.linearRampToValueAtTime(0.12, startTime + 0.02);
+  g2.gain.linearRampToValueAtTime(0, startTime + duration * BEAT);
+  osc2.start(startTime); osc2.stop(startTime + duration * BEAT + 0.05);
+}
+
+function scheduleMusic() {
+  while (nextNoteTime < audioCtx.currentTime + 0.25) {
+    const [freq, dur] = melody[currentNoteIndex % melody.length];
+    playNote(freq, nextNoteTime, dur);
+    nextNoteTime += dur * BEAT;
+    currentNoteIndex++;
+    if (currentNoteIndex >= melody.length) {
+      currentNoteIndex = 0;
+      nextNoteTime += BEAT * 2;
+    }
+  }
+  if (musicPlaying) musicScheduler = setTimeout(scheduleMusic, 80);
+}
+
+function startMusic() {
+  createAudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  musicPlaying = true;
+  nextNoteTime = audioCtx.currentTime + 0.1;
+  currentNoteIndex = 0;
+  scheduleMusic();
+  const btn = document.getElementById('musicBtn');
+  const eq = document.getElementById('equalizer');
+  const lbl = document.getElementById('musicLabel');
+  btn.textContent = '⏸'; btn.classList.add('playing');
+  eq.classList.add('active');
+  lbl.textContent = '🎵 ¡Feliz Cumpleaños Yandy!';
+  lbl.classList.add('visible');
+  setTimeout(() => lbl.classList.remove('visible'), 3500);
+}
+
+function stopMusic() {
+  musicPlaying = false;
+  if (musicScheduler) clearTimeout(musicScheduler);
+  if (masterGain) {
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+    setTimeout(() => { if(masterGain) masterGain.gain.setValueAtTime(0.4, audioCtx.currentTime); }, 400);
+  }
+  const btn = document.getElementById('musicBtn');
+  const eq = document.getElementById('equalizer');
+  const lbl = document.getElementById('musicLabel');
+  btn.textContent = '▶'; btn.classList.remove('playing');
+  eq.classList.remove('active');
+  lbl.textContent = 'Pausado ⏸'; lbl.classList.add('visible');
+  setTimeout(() => { lbl.classList.remove('visible'); lbl.textContent = '🎵 ¡Feliz Cumpleaños Yandy!'; }, 2000);
+}
+
+function toggleMusic() {
+  musicPlaying ? stopMusic() : startMusic();
+}
+
+// ─── TAP OVERLAY ─────────────────────────────────────────
+function startExperience() {
+  const overlay = document.getElementById('tapOverlay');
+  overlay.classList.add('hidden');
+  setTimeout(() => overlay.style.display = 'none', 500);
+  startMusic();
+  for (let i = 0; i < 8; i++) {
+    setTimeout(() => fireworks.push(new Firework()), i * 200);
+  }
+}
+</script>
+</body>
+</html>
